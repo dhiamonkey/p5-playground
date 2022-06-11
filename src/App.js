@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef } from "react";
+import "./App.css";
+import p5 from "p5";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const sketch = (p) => {
+    let x = 100;
+    let y = 100;
+
+    p.setup = function () {
+      p.createCanvas(770, 300);
+    };
+
+    p.draw = function () {
+      p.background(0);
+      p.fill(255);
+      p.rect(x, y, 50, 50);
+    };
+  };
+
+  useEffect(() => {
+    //update sketch content
+    const mySketch = new p5(sketch);
+
+    return () => {
+      console.log("cleaning up effect");
+      mySketch.remove();
+    };
+  }, []);
+  return <div className="App">test</div>;
 }
 
 export default App;
