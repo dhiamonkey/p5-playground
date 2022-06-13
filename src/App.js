@@ -1,33 +1,40 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import p5 from "p5";
 
-function App() {
-  const sketch = (p) => {
-    let x = 100;
-    let y = 100;
+const App = () => {
+  const processingRef = useRef();
+  const [x, setX] = useState(100);
 
-    p.setup = function () {
-      p.createCanvas(770, 300);
+  const sketch = (p) => {
+    p.setup = () => {
+      p.createCanvas(590, 300).parent(processingRef.current);
     };
 
-    p.draw = function () {
+    p.draw = () => {
       p.background(0);
       p.fill(255);
-      p.rect(x, y, 50, 50);
+      p.rect(x, 100, 50, 50);
     };
   };
-
+  console.log(x);
   useEffect(() => {
     //update sketch content
-    const mySketch = new p5(sketch);
+    const mySketch = new p5(sketch, processingRef.current);
 
     return () => {
-      console.log("cleaning up effect");
       mySketch.remove();
+      console.log("remove");
     };
   }, []);
-  return <div className="App">test</div>;
-}
+  return (
+    <div className="App">
+      <div className="p5-react">
+        <div ref={processingRef}> </div>
+        <input type="text" value={x} onChange={(e) => setX(e.target.value)} />
+      </div>
+    </div>
+  );
+};
 
 export default App;
